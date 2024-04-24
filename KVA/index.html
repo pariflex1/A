@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html>
-   <head>
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   </head>
    <style>
 /* Import Google font - Poppins */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 * {
-  margin: 10;
-  padding: 10;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-  
+
+
+/*Responsive*/
+@media screen and (max-width: 500px) {
+  .form .column {
+    flex-wrap: wrap;
+  }
+  .form :where(.gender-option, .gender) {
+    row-gap: 15px;
+  }
+}  
 input[type=text], select {
       width: 100%;
       padding: 12px 20px;
@@ -31,7 +38,7 @@ input[type=text], select {
       border-radius: 4px;
       box-sizing: border-box;
       }
-      input[type=date], select {
+       input[type=date], select {
       width: 100%;
       padding: 12px 20px;
       margin: 8px 0;
@@ -50,18 +57,16 @@ input[type=text], select {
       border-radius: 4px;
       cursor: pointer;
       }
-
    </style>
    <body>
       <form id="form" class="container m-4 pl-4" method="POST">
-         <h2> STUDENT DATA ENTRY FOR ID CARD </h2>
          <div class="field">
             <div class="control">
                <input type="hidden" name="School" value="KVA-3" />
             </div>
          </div>
-         <select name="Class">
-            <option value="General Inquiry">--Select Class--</option>
+         <select name="Class"  required>
+            <option value="">--Select Class--</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -77,11 +82,11 @@ input[type=text], select {
          </select>
 
   
-<input type="radio"  id="A" name="Section" value="A"checked>
+<input type="radio"  id="A" name="Section" value="A">
   <label for="A">Section-A</label>
   <input type="radio"  id="B" name="Section" value="B">
   <label for="B">Section-B</label>
-  <input type="radio"  id="C" name="Section" value="C">
+  <input type="radio"  id="C" name="Section" value="C"required>
   <label for="C">Section-C</label>
 
          <div class="field">
@@ -110,19 +115,22 @@ input[type=text], select {
                </div>
             </div>
             <div class="control">
-              <label> Date of Birth </label><br>  <input class="input" type="date" placeholder="Date of Birth" name="Date of Birth" required />
+              
+  <select name="Blood Group"  required>
+            <option value="">--Select Blood Group--</option>
+            <option value="A+">A+</option>
+            <option value="B+">B+</option>
+            <option value="O+">O+</option>
+            <option value="AB">AB</option>
+            <option value="A-">A-</option>
+            <option value="B-">B-</option>
+            <option value="O-">O-</option>
+            <option value="AB-">AB-</option>
+            </select>
+<label> Date of Birth </label><br>  <input class="input" type="date" placeholder="Date of Birth" name="Date of Birth" required />
             </div>
          </div>
-         
- <label> Blood Group </label><br>       
-<input type="radio"  id="bgA" name="Blood Group" value="A" checked>
-  <label for="bgA">A</label>
-  <input type="radio"  id="bgB" name="Blood Group" value="B">
-  <label for="bgB">B</label>
-  <input type="radio"  id="bgO" name="Blood Group" value="O">
-  <label for="bgO">O</label>
-  <input type="radio"  id="bgAB" name="Blood Group" value="AB">
-  <label for="bgAB">AB</label>
+  
          
          
          <div class="field is-grouped">
@@ -204,11 +212,5 @@ input[type=text], select {
           });
           
       </script>
-<br>
-<br>
-<br>
-<br>
-<br>
-<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vReGvRmcrY7OoYT82kYFwOKRC5UyBZI_N5bgYy8mq9Tda_5WuiruWhieNAIG4C3667TJ002q8vpCGdZ/pubhtml?gid=309506201&amp;single=true&amp;widget=true&amp;headers=false "width="100%" height="1200""></iframe>
-  </body>
+   </body>
 </html>
