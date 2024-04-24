@@ -57,6 +57,36 @@ input[type=text], select {
       border-radius: 4px;
       cursor: pointer;
       }
+      
+#section{
+  height: 45px;
+  border: none;
+  overflow: hidden;
+}
+#section::-moz-focus-inner {
+  border: 0;
+}
+#section:focus {
+  outline: none;
+}
+#section option{
+  width: 75px;
+  font-size: 14px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+ 
+  text-align: center;
+  margin-right: 10px;
+  
+  display: inline-block;
+  cursor: pointer;
+  border:rgb(0,0,0) solid 1px;
+  border-radius: 5px;
+  color: #000;
+}
+      
    </style>
    <body>
       <form id="form" class="container m-4 pl-4" method="POST">
@@ -81,13 +111,11 @@ input[type=text], select {
             <option value="12">12</option>
          </select>
 
-  
-<input type="radio"  id="A" name="Section" value="A">
-  <label for="A">Section-A</label>
-  <input type="radio"  id="B" name="Section" value="B">
-  <label for="B">Section-B</label>
-  <input type="radio"  id="C" name="Section" value="C"required>
-  <label for="C">Section-C</label>
+<select name="Section" id="section" multiple required>
+  <option value="A">Sec-A</option>
+  <option value="B">Sec-B</option>
+  <option value="C">Sec-C</option>
+</select>
 
          <div class="field">
          <div class="control">
