@@ -33,6 +33,7 @@
             max-width: 800px; /* Max width for larger screens */
             height: auto; /* Maintain aspect ratio */
             aspect-ratio: 4/3; /* Standard game aspect ratio */
+            touch-action: none; /* Prevent default touch actions like scrolling/zooming */
         }
 
         .game-info {
@@ -151,7 +152,7 @@
 
             // Calculate the scaling factor based on the max-width set in CSS
             const maxWidth = parseFloat(getComputedStyle(canvas).maxWidth);
-            const scaleFactor = Math.min(maxWidth / baseWidth, window.innerHeight / baseHeight * 0.8); // Adjust based on viewport height
+            const scaleFactor = Math.min(maxWidth / baseWidth, (window.innerHeight * 0.8) / baseHeight); // Adjust based on viewport height
 
             canvas.width = baseWidth;
             canvas.height = baseHeight;
@@ -216,6 +217,13 @@
         document.addEventListener('keydown', keyDownHandler, false);
         document.addEventListener('keyup', keyUpHandler, false);
 
+        // Event listeners for mouse and touch input
+        canvas.addEventListener('mousemove', mouseMoveHandler, false);
+        canvas.addEventListener('touchmove', touchMoveHandler, false);
+        // Prevent default touch behavior (e.g., scrolling) on touch start
+        canvas.addEventListener('touchstart', (e) => e.preventDefault(), false);
+
+
         /**
          * Handles keydown events to control paddle movement.
          * @param {KeyboardEvent} e - The keyboard event object.
@@ -237,6 +245,64 @@
                 rightPressed = false;
             } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
                 leftPressed = false;
+            }
+        }
+
+        /**
+         * Calculates the x-coordinate relative to the canvas's internal drawing surface.
+         * Accounts for CSS scaling.
+         * @param {Event} event - The mouse or touch event object.
+         * @returns {number} The x-coordinate relative to the canvas.
+         */
+        function getRelativeX(event) {
+            const rect = canvas.getBoundingClientRect(); // Get the size and position of the canvas on the page
+            let clientX;
+
+            if (event.touches && event.touches.length > 0) {
+                clientX = event.touches[0].clientX;
+            } else {
+                clientX = event.clientX;
+            }
+
+            // Calculate the x-position relative to the canvas's *displayed* size
+            const xOnScreen = clientX - rect.left;
+
+            // Scale this position back to the canvas's internal coordinate system (baseWidth)
+            // rect.width is the *displayed* width of the canvas
+            // canvas.width is the *internal* width of the canvas (baseWidth)
+            return xOnScreen * (canvas.width / rect.width);
+        }
+
+        /**
+         * Handles mouse movement to control the paddle.
+         * @param {MouseEvent} e - The mouse event object.
+         */
+        function mouseMoveHandler(e) {
+            const relativeX = getRelativeX(e);
+            // Position the center of the paddle at the mouse's x-coordinate,
+            // ensuring it stays within canvas bounds.
+            paddleX = relativeX - paddleWidth / 2;
+            if (paddleX < 0) {
+                paddleX = 0;
+            } else if (paddleX + paddleWidth > canvas.width) {
+                paddleX = canvas.width - paddleWidth;
+            }
+        }
+
+        /**
+         * Handles touch movement to control the paddle on mobile devices.
+         * @param {TouchEvent} e - The touch event object.
+         */
+        function touchMoveHandler(e) {
+            e.preventDefault(); // Prevent default touch actions like scrolling
+            const relativeX = getRelativeX(e);
+            // Position the center of the paddle at the touch's x-coordinate,
+            // ensuring it stays within canvas bounds.
+            paddleX = relativeX - paddleWidth / 2;
+            if (paddleX < 0) {
+                paddleX = 0;
+            } else if (paddleX + paddleWidth > canvas.width) {
+                paddleX = canvas.width - paddleWidth;
             }
         }
 
@@ -376,7 +442,7 @@
                 }
             }
 
-            // Paddle movement logic
+            // Paddle movement logic (keyboard controls remain active alongside mouse/touch)
             if (rightPressed && paddleX < canvas.width - paddleWidth) {
                 paddleX += 7;
             } else if (leftPressed && paddleX > 0) {
